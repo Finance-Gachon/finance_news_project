@@ -32,31 +32,3 @@ $ conda activate bigdata
 ```bash
 $ pip install -r requirements.txt
 ```
-<br><br>
-## 💻 실행하는 법 <a name='torun'></a>
-
-### Train
-
-```bash
-$ python main.py -m t
-$ python main.py -m train
-```
-
-### Inference
-
-```bash
-$ python main.py -m i
-$ python main.py -m inference
-```
-
-### Hyper-parameter Searching
-```bash
-$ python main.py -m h
-$ python main.py -m hp_searching
-```
-
-### Optuna Searching
-```bash
-$ python main.py -m o
-$ python main.py -m optuna
-```
