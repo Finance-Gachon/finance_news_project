@@ -2,10 +2,116 @@
   text-align: center;
 }
 
+
+.header{
+  height: 20vh;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+
+  
+}
+h3{
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 5vh;
+}
+.screen {
+  height: 200vh;
+  background-color:rgb(225, 225, 225);
+}
+
+.search-area{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5vh;
+  height: 10vh;
+}
+
+.search-input {
+  height: 6vh;
+  width: 50vh;
+}
+
+.body{
+  display: flex;
+}
+
+.search-button {
+  height: 6vh;
+  width: 6vh;
+  margin-left: 2%;
+}
+
+.menu {
+  background-color: white;
+  /* border-radius: 3vh; */
+  height: 80vh;
+  width: 35vh;
+  margin-top: 0.5vh;
+}
+
+.background-block{
+  background-color: rgb(225, 225, 225);
+  width: 136vh;
+  height: 60vh;
+}
+
+.body-block {
+  /* background-color: azure; */
+
+}
+
+.body-top-block{
+    height: 18vh;
+  display: flex;
+  margin-top: 2vh;
+}
+
+#top-block{
+  background-color: white;
+  border-radius: 3vh;
+  margin-left: 3vh;
+  width: 49vh;
+  height: 15vh;
+}
+.body-bottom-block{
+  display: flex;
+}
+
+#main-block{
+  width: 100vh;
+  height: 55vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  background-color: white;
+  border-radius: 5vh;
+}
+
+.left-side-block{
+  margin-left: 3vh;
+  background-color: white;
+  border-radius: 3vh;
+  margin-right: 2vh;
+  width: 25vh;
+  height: 55vh;
+}
+
+.right-side-block{
+  margin-left: 2vh;
+  background-color: white;
+  border-radius: 5vh;
+  width: 30vh;
+  height: 55vh;
+}
+/* --------------------------------------- */
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
