@@ -1,12 +1,102 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components'; //npm install styled-components
+
 
 const App = () => {
+
   const [data, setData] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [inputStartDate, setStartDate] = useState('');
   const [inputEndDate, setEndDate] = useState('');
+  const [valuePN, setValuePN] = useState();
+  const [imgPN, setImgPN] = useState();
+
+
+  const testPN = 0.9  //긍부정 테스트 값
+  useEffect(() => {
+    if (testPN >= 0.5) {
+      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279617.png" />)
+      setValuePN(<H3 style={{ color: "#4a29cf" }}>긍정</H3>)
+    }
+    else if (testPN <= 0.5) {
+      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279616.png" />)
+      setValuePN(<H3 style={{ color: "#cf294a" }}>부정</H3>)
+    }
+
+  }, [testPN])
+
+
+  const HeadArea = styled.div`
+  align-items: center;
+  justify-content: center;
+  height:300px`
+
+  const SearchArea = styled.div`
+  display:flex;
+  flex-direction: column;
+  
+  `;
+
+  const DateArea = styled.div`
+  display:flex;
+  flex-direction: row;
+  `
+  const TopBlock = styled.div`
+  display:flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 3vh;
+  margin-left: 3vh;
+  width: 49vh;
+  height: 15vh;`
+
+  const H3 = styled.h3`
+  margin-left: 10px;
+  margin-bottom: 0;
+  width: 40vh;
+  font-weight: bold;
+`
+
+  const Img = styled.img`
+  margin-left: 30px;
+  width:40px;
+  `
+
+  const BlockTitle = styled.div`
+  margin-top: 15px;
+  display:flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  width:100%
+  `
+  const LinkBox = styled.div`
+  display:flex;
+  flex-direction: column;
+  margin-left:50px;
+  margin-top:10px;
+  `
+  const NewsLink = styled.a`
+  font-size: 20px
+  `
+  const RatioBoxPN = styled.div`
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 170px;
+  width:100%
+  `
+  const RatioPN = styled.div`
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 170px;
+  width:100%
+  `
 
   const onClick = () => {
     axios.get(`http://localhost:8000/search/${inputValue}&${inputStartDate}&${inputEndDate}`)
@@ -36,27 +126,30 @@ const App = () => {
     setEndDate(e.target.value);
   }
 
+
   return (
+
     <div className="screen">
       <div className="header">
-        <div>
-          <form className="search-area">
-            <input className="search-input" type="text" id='search-data' placeholder='종목을 검색하세요'
-               value={inputValue} onChange={handleInputChange}></input>
-
-            <label>시작일
-            <input className="date-input" type="date" id="date-date"
-              value={inputStartDate} onChange={handleStartDateChange}></input>
-            </label>
-
-            <label>종료일
-            <input className="date-input" type="date" id="date-date"
-              value={inputEndDate} onChange={handleEndDateChange}></input>
-            </label>
-            
-            <button type="button" className="search-button" onClick={onClick}> 검색 </button>
+        <HeadArea>
+          <form className="search-area" style={{ height: "200px" }}>
+            <SearchArea>
+              <input className="form-control" style={{ width: "500px", height: "70px", marginBottom: "10px", border: "1px solid #000" }} type="text" id='search-data' placeholder='종목을 검색하세요'
+                value={inputValue} onChange={handleInputChange}></input>
+              <DateArea>
+                <label>시작일
+                  <input className="date-input" style={{ borderRadius: "5px", border: "1px solid #000", width: "190px", height: "30px", marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }} type="date" id="date-date"
+                    value={inputStartDate} onChange={handleStartDateChange}></input>
+                </label>
+                <label>종료일
+                  <input className="date-input" style={{ borderRadius: "5px", border: "1px solid #000", width: "190px", height: "30px", marginBottom: "10px", marginLeft: "10px" }} type="date" id="date-date"
+                    value={inputEndDate} onChange={handleEndDateChange}></input>
+                </label>
+              </DateArea>
+            </SearchArea>
+            <button type="button" style={{ height: "120px", width: "100px", marginLeft: "20px" }} className="btn btn-outline-primary" onClick={onClick}> 검색 </button>
           </form>
-        </div>
+        </HeadArea>
       </div>
       <div className='body'>
         <div className="menu">
@@ -70,16 +163,38 @@ const App = () => {
         </div>
         <div className='background-block'>
           <div className="body-top-block">
-          <div className='body-block' id="top-block"></div>
-          <div className='body-block' id="top-block"></div>
-          <div className='body-block' id="top-block"></div>
+
+            <TopBlock>
+              <BlockTitle>
+                <Img src="https://cdn-icons-png.flaticon.com/128/5425/5425638.png" />
+                <H3 style={{ color: "#ffc905" }}>최신 뉴스 모음</H3>
+              </BlockTitle>
+              <LinkBox>
+                <NewsLink>test.com</NewsLink>
+                <NewsLink>test.com</NewsLink>
+                <NewsLink>test.com</NewsLink>
+              </LinkBox>
+            </TopBlock>
+            <TopBlock>
+              <BlockTitle>
+                {imgPN}
+                {valuePN}
+              </BlockTitle>
+            </TopBlock>
+            <TopBlock>
+            <RatioBoxPN>
+              <RatioPN>
+
+              </RatioPN>
+            </RatioBoxPN>
+            </TopBlock>
           </div>
           <div className="body-bottom-block">
-          <div className='left-side-block'></div>
-          <div className='body-block' id='main-block'></div>
-          <div className='right-side-block'></div>
+            <div className='left-side-block'></div>
+            <div className='body-block' id='main-block'></div>
+            <div className='right-side-block'></div>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
