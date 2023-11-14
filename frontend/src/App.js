@@ -1,29 +1,70 @@
 import './App.css';
-// import axios from 'axios';
+import React, {useState} from 'react';
+import axios from 'axios';
 
 const App = () => {
+  const [data, setData] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [inputStartDate, setStartDate] = useState('');
+  const [inputEndDate, setEndDate] = useState('');
 
-  const goSearch = (event) => {
-    
-    const searchInputValue = event.target.elements["search-data"].value;
+  const onClick = () => {
+    axios.get(`http://localhost:8000/search/${inputValue}&${inputStartDate}&${inputEndDate}`)
+      .then(response => {
+        console.log(response.data);
+        console.log(response.data.data);
+        setData(response.data.data);
+      })
+      .catch(error => {
+        console.error('데이터를 불러오는 중 오류 발생:', error);
+      });
+  }
 
-    // 이제 searchInputValue를 사용하여 검색 또는 필요한 작업을 수행할 수 있음
+  const handleInputChange = (e) => {
+    // 사용자가 입력할 때 마다 inputValue 상태를 업데이트
+    console.log(e.target.value)
+    setInputValue(e.target.value);
+  }
 
-    console.log("검색어:", searchInputValue);
-  };
+  const handleStartDateChange = (e) => {
+    console.log(e.target.value)
+    setStartDate(e.target.value);
+  }
+
+  const handleEndDateChange = (e) => {
+    console.log(e.target.value)
+    setEndDate(e.target.value);
+  }
 
   return (
     <div className="screen">
       <div className="header">
         <div>
-          <form onSubmit={goSearch} className="search-area">
-            <input className="search-input" type="text" id='search-data' placeholder='종목을 검색하세요'></input>
-            <button className="search-button" type='submit'> 검색 </button>
+          <form className="search-area">
+            <input className="search-input" type="text" id='search-data' placeholder='종목을 검색하세요'
+               value={inputValue} onChange={handleInputChange}></input>
+
+            <label>시작일
+            <input className="date-input" type="date" id="date-date"
+              value={inputStartDate} onChange={handleStartDateChange}></input>
+            </label>
+
+            <label>종료일
+            <input className="date-input" type="date" id="date-date"
+              value={inputEndDate} onChange={handleEndDateChange}></input>
+            </label>
+            
+            <button type="button" className="search-button" onClick={onClick}> 검색 </button>
           </form>
         </div>
       </div>
       <div className='body'>
         <div className="menu">
+          {data && data.map((item, index) => (
+            <div key={index}>
+              {item.company_name} {item.item}
+            </div>
+          ))}
         </div>
         <div className='body-title'>
         </div>
