@@ -28,21 +28,8 @@ const App = () => {
   }, [testPN])
 
 
-  const HeadArea = styled.div`
-  align-items: center;
-  justify-content: center;
-  height:300px`
 
-  const SearchArea = styled.div`
-  display:flex;
-  flex-direction: column;
-  
-  `;
 
-  const DateArea = styled.div`
-  display:flex;
-  flex-direction: row;
-  `
   const TopBlock = styled.div`
   display:flex;
   flex-direction: column;
@@ -99,15 +86,16 @@ const App = () => {
   `
 
   const onClick = () => {
-    axios.get(`http://localhost:8000/search/${inputValue}&${inputStartDate}&${inputEndDate}`)
-      .then(response => {
-        console.log(response.data);
-        console.log(response.data.data);
-        setData(response.data.data);
-      })
-      .catch(error => {
-        console.error('데이터를 불러오는 중 오류 발생:', error);
-      });
+    console.log(inputValue)
+    // axios.get(`http://localhost:8000/search/${inputValue}&${inputStartDate}&${inputEndDate}`)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     console.log(response.data.data);
+    //     setData(response.data.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('데이터를 불러오는 중 오류 발생:', error);
+    //   });
   }
 
   const handleInputChange = (e) => {
@@ -131,12 +119,12 @@ const App = () => {
 
     <div className="screen">
       <div className="header">
-        <HeadArea>
+        <div className='head-area'>
           <form className="search-area" style={{ height: "200px" }}>
-            <SearchArea>
+            <div className="search-input-area">
               <input className="form-control" style={{ width: "500px", height: "70px", marginBottom: "10px", border: "1px solid #000" }} type="text" id='search-data' placeholder='종목을 검색하세요'
                 value={inputValue} onChange={handleInputChange}></input>
-              <DateArea>
+              <div className='date-area'>
                 <label>시작일
                   <input className="date-input" style={{ borderRadius: "5px", border: "1px solid #000", width: "190px", height: "30px", marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }} type="date" id="date-date"
                     value={inputStartDate} onChange={handleStartDateChange}></input>
@@ -145,11 +133,11 @@ const App = () => {
                   <input className="date-input" style={{ borderRadius: "5px", border: "1px solid #000", width: "190px", height: "30px", marginBottom: "10px", marginLeft: "10px" }} type="date" id="date-date"
                     value={inputEndDate} onChange={handleEndDateChange}></input>
                 </label>
-              </DateArea>
-            </SearchArea>
+              </div>
+              </div>
             <button type="button" style={{ height: "120px", width: "100px", marginLeft: "20px" }} className="btn btn-outline-primary" onClick={onClick}> 검색 </button>
           </form>
-        </HeadArea>
+        </div>
       </div>
       <div className='body'>
         <div className="menu">
