@@ -8,13 +8,11 @@
   background-color: white;
   align-items: center;
   justify-content: center;
-
-  
 }
 
 h3{
-  margin-top: 20px;
-  margin-left: 20px;
+  margin-top: 2vh;
+  margin-left: 2vh;
   margin-bottom: 0;
   width: 40vh;
   font-weight: bold;
@@ -42,6 +40,9 @@ h3{
 
 .body{
   display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .search-button {
@@ -53,24 +54,32 @@ h3{
 .menu {
   background-color: white;
   /* border-radius: 3vh; */
-  height: 80vh;
-  width: 35vh;
+  height: 10vh;
+  width: 2vh;
   margin-top: 0.5vh;
 }
 
 .background-block{
   background-color: rgb(225, 225, 225);
-  width: 136vh;
-  height: 60vh;
+  width: 160vh;
+  height: 70vh;
 }
 
-.body-block {
-  /* background-color: azure; */
-
-}
 
 .body-top-block{
-    height: 18vh;
+  height: 18vh;
+  display: flex;
+  margin-top: 2vh;
+}
+
+.body-middle-block{
+  height: 60vh;
+  display: flex;
+  margin-top: 2vh;
+}
+
+.body-bottom-block{
+  height: 70vh;
   display: flex;
   margin-top: 2vh;
 }
@@ -81,7 +90,12 @@ h3{
   margin-left: 3vh;
   width: 49vh;
   height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
+
 .body-bottom-block{
   display: flex;
 }
@@ -129,9 +143,9 @@ h3{
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -151,7 +165,7 @@ h3{
 .head-area{
   align-items: center;
   justify-content: center;
-  height:300px;
+  height:30vh;
   }
 
 .date-area{
