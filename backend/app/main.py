@@ -3,14 +3,11 @@ from fastapi import FastAPI, Response, Request, Depends, Query, Header
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
 import json
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+import pandas as pd
 
 from fastapi.logger import logger
-# ... other imports
 import logging
 
 company_searching = [
@@ -24,13 +21,10 @@ company_searching = [
     }
 ]
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+DATA_DIR = os.path.join(CURRENT_DIR, 'data')
+DATAFRAME_PATH = os.path.join(DATA_DIR, 'all_news_with_sentiment.csv')
+news_df = pd.read_csv(DATAFRAME_PATH)
 
 app = FastAPI()
 logger = logging.getLogger("uvicorn.error")
@@ -54,6 +48,7 @@ async def root():
     search='삼성전자'
     logger.info(search)
     logger.info(msg="Hello!")
+    # logger.info(os.path.realpath(__file__))
     # return Response(result, media_type="application/json")
     return {"message": "Hello World"}
     # return {"hello goodbye"}
@@ -65,15 +60,18 @@ async def request_search(search:dict) -> dict:
     # return {'data': 'good'}
     return search
 
-@app.get("/search/{company_name}&{start_date}&{end_date}")
-async def request_search(company_name, start_date, end_date):
-    logger.info(company_name)
+@app.get("/search/{search}&{start_date}&{end_date}")
+async def request_search(search, start_date, end_date):
+    logger.info(search)
     logger.info(start_date)
     logger.info(end_date)
-    
-    new_companys = []
-    for one in company_searching:
-        if one["company_name"] == company_name:
-            new_companys.append(one)
 
-    return {"data" : new_companys}
+    start_date = ''.join(start_date.split('-'))
+    end_date = ''.join(end_date.split('-'))
+    search_df = news_df[(news_df['search'] == search) & 
+                        (news_df['news_date'] >= int(start_date)) & 
+                        (news_df['news_date'] <= int(end_date))]
+    search_df = search_df[['title', 'news_date']]
+    search_dict = search_df.to_dict(orient='records')
+
+    return {"data" : search_dict}
