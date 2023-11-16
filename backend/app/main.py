@@ -4,22 +4,9 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 import os
-import json
 import pandas as pd
-
-from fastapi.logger import logger
+from collections import Counter
 import logging
-
-company_searching = [
-    {
-        "company_name": "삼성전자",
-        "item": "Read a book."
-    },
-    {
-        "company_name": "LG에너지솔루션",
-        "item": "Read a book."
-    }
-]
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURRENT_DIR, 'data')
@@ -44,14 +31,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    result = json.dumps({"message": "Hello World"})
-    search='삼성전자'
-    logger.info(search)
-    logger.info(msg="Hello!")
-    # logger.info(os.path.realpath(__file__))
-    # return Response(result, media_type="application/json")
     return {"message": "Hello World"}
-    # return {"hello goodbye"}
 
 @app.post("/search")
 async def request_search(search:dict) -> dict:
@@ -71,7 +51,20 @@ async def request_search(search, start_date, end_date):
     search_df = news_df[(news_df['search'] == search) & 
                         (news_df['news_date'] >= int(start_date)) & 
                         (news_df['news_date'] <= int(end_date))]
-    search_df = search_df[['title', 'news_date']]
+    search_df = search_df[['title', 'news_date', 'label', 'URL']]
+    search_df = search_df.dropna()
     search_dict = search_df.to_dict(orient='records')
 
-    return {"data" : search_dict}
+    sentiment_result = []
+
+    for one_date in search_df['news_date'].unique():
+        tmp_df = search_df[search_df['news_date'] == one_date]
+        row = Counter(tmp_df['label'])
+        row = dict(row)
+        one_date = str(one_date)
+        one_date = one_date[:4] + '-' + one_date[4:6] + '-' + one_date[6:]
+        row.update({"date":str(one_date)})
+        sentiment_result.append(row)
+
+    return {"data" : search_dict,
+            "sentiment": sentiment_result}
