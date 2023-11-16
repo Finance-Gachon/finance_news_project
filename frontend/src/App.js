@@ -2,11 +2,13 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components'; //npm install styled-components
-
+import LineChart from './components/line_chart';
+import DoughnutChart from './components/doughnut_chart';
 
 const App = () => {
 
   const [data, setData] = useState(null);
+  const [sentimentData, setSentimentData] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [inputStartDate, setStartDate] = useState('');
   const [inputEndDate, setEndDate] = useState('');
@@ -14,7 +16,6 @@ const App = () => {
   const [imgPN, setImgPN] = useState();
   const [pMaxDay, setPMaxDay] = useState("2023-11-16"); //긍정 비율이 제일 높았던 날
   const [mMaxDay, setMMaxDay] = useState("2023-11-20"); //부정 비율이 제일 높았던 날
-
 
   const testPN = 0.9  //긍부정 테스트 값
   useEffect(() => {
@@ -60,6 +61,7 @@ const App = () => {
   height:10vh;
   width: 40vh;
   font-weight: bold;
+  font-size: 20px;
 `
 
   const Img = styled.img`
@@ -83,7 +85,12 @@ const App = () => {
   margin-top:0.2vh;
   `
   const NewsLink = styled.a`
-  font-size: 2vh
+  font-size: 2vh;
+  display: inline-block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   `
   const RatioBoxPN = styled.div`
   display:flex;
@@ -105,9 +112,10 @@ const App = () => {
   const onClick = () => {
     axios.get(`http://localhost:8000/search/${inputValue}&${inputStartDate}&${inputEndDate}`)
       .then(response => {
-        console.log(response.data);
-        console.log(response.data.data);
+        // console.log(response.data);
+        // console.log(response.data.data);
         setData(response.data.data);
+        setSentimentData(response.data.sentiment);
       })
       .catch(error => {
         console.error('데이터를 불러오는 중 오류 발생:', error);
@@ -116,17 +124,17 @@ const App = () => {
 
   const handleInputChange = (e) => {
     // 사용자가 입력할 때 마다 inputValue 상태를 업데이트
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setInputValue(e.target.value);
   }
 
   const handleStartDateChange = (e) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setStartDate(e.target.value);
   }
 
   const handleEndDateChange = (e) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setEndDate(e.target.value);
   }
 
@@ -157,11 +165,7 @@ const App = () => {
       </div>
       <div className='body'>
         <div className="menu">
-          {data && data.map((item, index) => (
-            <div key={index}>
-              {item.company_name} {item.item}
-            </div>
-          ))}
+          
         </div>
         <div className='body-title'>
         </div>
@@ -174,9 +178,9 @@ const App = () => {
                 <H3 style={{ color: "#ffc905" }}>최신 뉴스 모음</H3>
               </BlockTitle>
               <LinkBox>
-                <NewsLink>test.com</NewsLink>
-                <NewsLink>test.com</NewsLink>
-                <NewsLink>test.com</NewsLink>
+                <NewsLink href={data && data[0].URL}>{data && data[0].title}</NewsLink>
+                <NewsLink href={data && data[1].URL}>{data && data[1].title}</NewsLink>
+                <NewsLink href={data && data[2].URL}>{data && data[2].title}</NewsLink>
               </LinkBox>
             </TopBlock>
             <TopBlock>
@@ -207,12 +211,25 @@ const App = () => {
             </TopBlock>
           </div>
           <div className="body-middle-block">
-            <MiddleBlock style={{width:"80vh"}}></MiddleBlock>
+            <MiddleBlock style={{width:"80vh"}}>
+              <div>
+              {/* {data && data.map((item, index) => (
+                <div key={index}>
+                  {item.news_date} {item.item}
+                </div>
+              ))} */}
+                가운데
+              </div>
+            </MiddleBlock>
             <MiddleBlock style={{width:"80vh"}}></MiddleBlock>
           </div>
           <div className="body-bottom-block">
-            <BottomBlock style={{width:"95vh"}}></BottomBlock>
-            <BottomBlock style={{width:"65vh"}}></BottomBlock>
+            <BottomBlock style={{width:"95vh"}}>
+              {data && <LineChart data={sentimentData}></LineChart>}
+            </BottomBlock>
+            <BottomBlock style={{width:"65vh"}}>
+              {data && <DoughnutChart data={sentimentData}></DoughnutChart>}
+            </BottomBlock>
             </div>
         </div>
       </div>
