@@ -66,5 +66,7 @@ async def request_search(search, start_date, end_date):
         row.update({"date":str(one_date)})
         sentiment_result.append(row)
 
+    sentiment_result.reverse()
+
     return {"data" : search_dict,
             "sentiment": sentiment_result}
