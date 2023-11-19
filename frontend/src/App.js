@@ -50,7 +50,7 @@ const App = () => {
   margin-left: 1vh;
   margin-top: 0;
   height:10vh;
-  width: 10vh;
+  width: 40vh;
   font-weight: bold;
   font-size: 20px;
 `
@@ -139,11 +139,11 @@ const App = () => {
   useEffect(() => {
     if (score >= 0.5) {
       setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279617.png" />)
-      setValuePN(<H3 style={{ color: "#4a29cf" }}>긍정</H3>)
+      setValuePN(<H3 style={{ color: "#4a29cf" }}>긍정   {data && Math.round(score*100).toString()+'%'}</H3>)
     }
     else if (score < 0.5) {
       setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279616.png" />)
-      setValuePN(<H3 style={{ color: "#cf294a" }}>부정</H3>)
+      setValuePN(<H3 style={{ color: "#cf294a" }}>부정    {data && Math.round(score*100).toString()+'%'}</H3>)
     }
   }, [score])
 
@@ -193,7 +193,6 @@ const App = () => {
               <BlockTitle>
                 {imgPN}
                 {valuePN}
-                <h5>{data && Math.round(score*100).toString()+'%'}</h5>
               </BlockTitle>
             </TopBlock>
             <TopBlock>
