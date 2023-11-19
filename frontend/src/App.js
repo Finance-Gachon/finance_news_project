@@ -8,7 +8,7 @@ import WordCloud from './components/word_cloud';
 import NetworkGraph from './components/network_graph';
 
 const App = () => {
-
+  const [search, setSearch] = useState(null);
   const [data, setData] = useState(null);
   const [sentimentData, setSentimentData] = useState(null);
   const [similarData, setSimilarData] = useState(null);
@@ -105,6 +105,7 @@ const App = () => {
       .then(response => {
         // console.log(response.data);
         // console.log(response.data.data);
+        setSearch(response.data.search);
         setData(response.data.data);
         setSentimentData(response.data.sentiment);
         setSimilarData(response.data.similar);
@@ -224,7 +225,7 @@ const App = () => {
             </MiddleBlock>
             <MiddleBlock style={{width:"75vh"}}>
               <div>
-                {data && <NetworkGraph data={{'data':similarData, 'search':inputValue}}></NetworkGraph>}
+                {data && <NetworkGraph data={{'data':similarData, 'search':search}}></NetworkGraph>}
               </div>
             </MiddleBlock>
           </div>
