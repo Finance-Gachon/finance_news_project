@@ -4,32 +4,23 @@ import axios from 'axios';
 import styled from 'styled-components'; //npm install styled-components
 import LineChart from './components/line_chart';
 import DoughnutChart from './components/doughnut_chart';
+import WordCloud from './components/word_cloud';
+import NetworkGraph from './components/network_graph';
 
 const App = () => {
 
   const [data, setData] = useState(null);
   const [sentimentData, setSentimentData] = useState(null);
+  const [similarData, setSimilarData] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [inputStartDate, setStartDate] = useState('');
   const [inputEndDate, setEndDate] = useState('');
   const [valuePN, setValuePN] = useState();
   const [imgPN, setImgPN] = useState();
-  const [pMaxDay, setPMaxDay] = useState("2023-11-16"); //긍정 비율이 제일 높았던 날
-  const [mMaxDay, setMMaxDay] = useState("2023-11-20"); //부정 비율이 제일 높았던 날
+  const [pMaxDay, setPMaxDay] = useState(""); //긍정 비율이 제일 높았던 날
+  const [nMaxDay, setNMaxDay] = useState(""); //부정 비율이 제일 높았던 날
 
-  const testPN = 0.9  //긍부정 테스트 값
-  useEffect(() => {
-    if (testPN >= 0.5) {
-      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279617.png" />)
-      setValuePN(<H3 style={{ color: "#4a29cf" }}>긍정</H3>)
-    }
-    else if (testPN <= 0.5) {
-      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279616.png" />)
-      setValuePN(<H3 style={{ color: "#cf294a" }}>부정</H3>)
-    }
-  }, [testPN])
-
-
+  const [sentimentPercent, setSentimentPercent] = useState('');
   const TopBlock = styled.div`
   display:flex;
   flex-direction: column;
@@ -116,6 +107,10 @@ const App = () => {
         // console.log(response.data.data);
         setData(response.data.data);
         setSentimentData(response.data.sentiment);
+        setSimilarData(response.data.similar);
+        setSentimentPercent(response.data.pos_neg);
+        setPMaxDay(response.data.max_pos_neg.positive);
+        setNMaxDay(response.data.max_pos_neg.negative);
       })
       .catch(error => {
         console.error('데이터를 불러오는 중 오류 발생:', error);
@@ -138,6 +133,19 @@ const App = () => {
     setEndDate(e.target.value);
   }
 
+  // const testPN = 0.9  //긍부정 테스트 값
+  // console.log(sentimentPercent)
+  const score = sentimentPercent.positive;
+  useEffect(() => {
+    if (score >= 0.5) {
+      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279617.png" />)
+      setValuePN(<H3 style={{ color: "#4a29cf" }}>긍정</H3>)
+    }
+    else if (score < 0.5) {
+      setImgPN(<Img src="https://cdn-icons-png.flaticon.com/128/8279/8279616.png" />)
+      setValuePN(<H3 style={{ color: "#cf294a" }}>부정</H3>)
+    }
+  }, [score])
 
   return (
 
@@ -187,6 +195,7 @@ const App = () => {
               <BlockTitle>
                 {imgPN}
                 {valuePN}
+                {data && Math.round(score*100).toString()+'%'}
               </BlockTitle>
             </TopBlock>
             <TopBlock>
@@ -204,7 +213,7 @@ const App = () => {
                 <Img src="https://cdn-icons-png.flaticon.com/128/8279/8279616.png" style={{height:"4vh",width:"4vh"}}/>
                 <h6>부정 비율이 가장 높았던 날</h6><br/>
                 </div>
-                <h6 style={{marginLeft:"5vh"}}>{mMaxDay}</h6>
+                <h6 style={{marginLeft:"5vh"}}>{nMaxDay}</h6>
               </RatioPN>
               </div>
             </RatioBoxPN>
@@ -213,15 +222,14 @@ const App = () => {
           <div className="body-middle-block">
             <MiddleBlock style={{width:"80vh"}}>
               <div>
-              {/* {data && data.map((item, index) => (
-                <div key={index}>
-                  {item.news_date} {item.item}
-                </div>
-              ))} */}
-                가운데
+                {data && <WordCloud data={similarData}></WordCloud>}
               </div>
             </MiddleBlock>
-            <MiddleBlock style={{width:"80vh"}}></MiddleBlock>
+            <MiddleBlock style={{width:"80vh"}}>
+              <div>
+                {data && <NetworkGraph data={{'data':similarData, 'search':inputValue}}></NetworkGraph>}
+              </div>
+            </MiddleBlock>
           </div>
           <div className="body-bottom-block">
             <BottomBlock style={{width:"95vh"}}>
