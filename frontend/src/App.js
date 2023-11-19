@@ -44,7 +44,7 @@ const App = () => {
   background-color: white;
   border-radius: 3vh;
   margin-left: 3vh;
-  height: 70vh;`
+  height: 65vh;`
 
   const H3 = styled.h3`
   margin-left: 1vh;
@@ -172,9 +172,7 @@ const App = () => {
         </div>
       </div>
       <div className='body'>
-        <div className="menu">
-          
-        </div>
+
         <div className='body-title'>
         </div>
         <div className='background-block'>
@@ -195,7 +193,7 @@ const App = () => {
               <BlockTitle>
                 {imgPN}
                 {valuePN}
-                {data && Math.round(score*100).toString()+'%'}
+                <h5>{data && Math.round(score*100).toString()+'%'}</h5>
               </BlockTitle>
             </TopBlock>
             <TopBlock>
@@ -225,14 +223,14 @@ const App = () => {
                 {data && <WordCloud data={similarData}></WordCloud>}
               </div>
             </MiddleBlock>
-            <MiddleBlock style={{width:"80vh"}}>
+            <MiddleBlock style={{width:"75vh"}}>
               <div>
                 {data && <NetworkGraph data={{'data':similarData, 'search':inputValue}}></NetworkGraph>}
               </div>
             </MiddleBlock>
           </div>
           <div className="body-bottom-block">
-            <BottomBlock style={{width:"95vh"}}>
+            <BottomBlock style={{width:"90vh"}}>
               {data && <LineChart data={sentimentData}></LineChart>}
             </BottomBlock>
             <BottomBlock style={{width:"65vh"}}>
