@@ -108,11 +108,13 @@ async def request_search(search, start_date, end_date):
         tmp_df = p_n_df[p_n_df['news_date']==news_date]                
         tmp_df = tmp_df['label'].value_counts() / len(tmp_df)
         
-        if max_positive < tmp_df['positive']:
+        # positive가 존재할 때
+        if 'positive' in tmp_df and max_positive < tmp_df['positive']:
             max_positive_date = news_date
             max_positive = tmp_df['positive']
-        
-        if max_negative < tmp_df['negative']:
+         
+        # negative가 존재할 때
+        if 'negative' in tmp_df and max_negative < tmp_df['negative']:
             max_negative_date = news_date
             max_negative = tmp_df['negative']
 
@@ -126,7 +128,8 @@ async def request_search(search, start_date, end_date):
     logger.info(max_pos_neg_date)
 
     word_and_corr = [(word, corr * 100 / max_value)for word, corr in word_and_corr][:10]
-    return {"data" : search_dict,
+    return {"search": search,
+            "data" : search_dict,
             "sentiment": sentiment_result, 
             "similar": word_and_corr,
             "pos_neg": p_n_label_dict,
