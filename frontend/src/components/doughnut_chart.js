@@ -5,9 +5,15 @@ ChartJS.register(ArcElement, Tooltip, Legend);
  
 function DoughnutChart(props) {
     const sentimentData = props.data;
-    const positiveSum = sentimentData.reduce((sum, data) => sum + data.positive, 0);
-    const neutralSum = sentimentData.reduce((sum, data) => sum + data.neutral, 0);
-    const negativeSum = sentimentData.reduce((sum, data) => sum + data.negative, 0);
+    let positiveSum = 0;
+    let neutralSum = 0;
+    let negativeSum = 0;
+    
+    for (let i = 0; i < sentimentData.length; i++) {
+        positiveSum += sentimentData[i].positive || 0;
+        neutralSum += sentimentData[i].neutral || 0;
+        negativeSum += sentimentData[i].negative || 0;
+    }
     
     const options = {
         responsive: true,

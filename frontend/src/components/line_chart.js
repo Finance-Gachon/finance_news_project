@@ -46,19 +46,19 @@ function LineChart(props) {
         datasets: [
             {
                 label: "긍정",
-                data: sentimentData.map((data) => data.positive),
+                data: sentimentData.map((data) => data.positive || 0),
                 borderColor: "rgb(63, 102, 218)",
                 backgroundColor: "rgba(63, 102, 218, 0.5)",
             },
             {
                 label: "중립",
-                data: sentimentData.map((data) => data.neutral),
+                data: sentimentData.map((data) => data.neutral || 0),
                 borderColor: "rgb(251, 196, 0)",
                 backgroundColor: "rgba(251, 196, 0, 0.5)",
             },
             {
                 label: "중립",
-                data: sentimentData.map((data) => data.negative),
+                data: sentimentData.map((data) => data.negative || 0),
                 borderColor: "rgb(255, 74, 111)",
                 backgroundColor: "rgba(255, 74, 111, 0.5)",
             },
