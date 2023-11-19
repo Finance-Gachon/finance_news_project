@@ -50,7 +50,7 @@ const App = () => {
   margin-left: 1vh;
   margin-top: 0;
   height:10vh;
-  width: 40vh;
+  width: 10vh;
   font-weight: bold;
   font-size: 20px;
 `
